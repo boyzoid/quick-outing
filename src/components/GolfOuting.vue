@@ -11,8 +11,8 @@
     <v-form ref="golferForm" v-model="valid" lazy-validation>
     <v-row align="center">
         <v-text-field ref="golferName" class="mr-15" v-model="golfer.name" label="Golfer" :rules="golferRules" required></v-text-field>
-        <v-text-field class="mr-15" v-model="golfer.score" label="Score" :rules="scoreRules" required></v-text-field>
-        <v-btn color="primary" v-on:click="addGolfer()">Add Golfer</v-btn>
+        <v-text-field type="number" min="1" class="mr-15 score" v-model="golfer.score" label="Score" :rules="scoreRules" required></v-text-field>
+        <v-btn color="primary" v-on:click="addGolfer()" :disabled="!valid">Add Golfer</v-btn>
     </v-row>
     </v-form>
     <v-expansion-panels multiple v-if="golfers.length > 0" v-model="panel">
@@ -21,7 +21,8 @@
         <v-expansion-panel-content>
           <v-row justify="space-around">
             <v-col cols="2"  v-for="(golfer, index ) in golfers" v-bind:key="index" justify="center">
-              <v-icon color="error" v-on:click="deleteGolfer( index )">fa-trash</v-icon> <span> {{ golfer.name }} - ( {{golfer.score}} )</span>
+              <div><v-icon color="error" v-on:click="deleteGolfer( index )">fa-trash</v-icon> <b> {{ golfer.name }}</b></div>
+              <div class="pl-6">{{ golfer.score}}</div>
             </v-col>
           </v-row>
           <v-row>
@@ -67,7 +68,8 @@
       value => !!value || 'Name is required.'
      ],
      scoreRules:[
-       value => !!value || 'Score is required.'
+       value => !!value || 'Score is required.',
+       value => ( !isNaN( value ) && value == parseInt( value ) ) || 'Score must be a a whole number greater than 0'
      ],
      valid: true,
       golfers:[],
@@ -81,7 +83,7 @@
       addGolfer: function(){
         var isValid = this.$refs.golferForm.validate();
         if( isValid ){
-          this.golfers.push( { name: this.golfer.name, score: this.golfer.score } );
+          this.golfers.push( { id: this.getId(), name: this.golfer.name, score: this.golfer.score } );
           this.golfers.sort( function( a ,b ){
             if (a.name < b.name)
               return -1;
@@ -102,26 +104,36 @@
       generateTeams: function(){
         this.teams = []
         var golfers = this.golfers.map(o => ({...o}))
+
+        golfers.sort = function(){
+          return this.random( -1, 1 );
+        }
+
         for( var g=0; g <Math.ceil( this.golfers.length/2 ); g++ ){
           var team = [];
           //Get first golfer for team
           var g1Idx = this.random( 0, golfers.length - 1 );
           team.push( golfers[ g1Idx ] );
           golfers.splice( g1Idx, 1 );
+          golfers.sort = function(){
+            return this.random( -1, 1 );
+          }
           // Get second golfer. If array is empty, we have odd number of golfers so grab random row from source
           // and make sure it is not the same golfer
           if( golfers.length > 0 ){
             var g2Idx =  this.random( 0, golfers.length - 1 );
             team.push( golfers[ g2Idx ] )
             golfers.splice( g2Idx, 1 );
-
+            golfers.sort = function(){
+              return this.random( -1, 1 );
+            }
           }
           else{
             var validPartner = false;
             while ( !validPartner ){
               var idx = this.random( 0, this.golfers.length );
-              if( this.golfers[ idx ] != team[ 0 ] ){
-                team.push( { name: '* ' + this.golfers[ idx ].name, score: this.golfers[ idx ] } )
+              if( this.golfers[ idx ].id != team[ 0 ].id ){
+                team.push( { name: '* ' + this.golfers[ idx ].name, score: this.golfers[ idx ].score } )
                 validPartner = true;
               }
             }
@@ -146,6 +158,9 @@
       },
       random: function( min, max ){
         return Math.floor(Math.random() * (max - min + 1)) + min;
+      },
+      getId: function(){
+        return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
       }
     },
   }
