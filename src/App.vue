@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire">
-    <v-app-bar app color="indigo" dark >
+    <v-app-bar app color="primary" dark >
       <v-toolbar-title>Golf Outing</v-toolbar-title>
     </v-app-bar>
 
@@ -13,7 +13,7 @@
         </v-row>
       </v-container>
     </v-main>
-    <v-footer color="indigo" app>
+    <v-footer color="primary" app>
       <span class="white--text">&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
   </v-app>
