@@ -58,7 +58,15 @@
   </v-container>
 
 </template>
-
+<style>
+.score input[type='number'] {
+  -moz-appearance:textfield;
+}
+.score input::-webkit-outer-spin-button,
+.score input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+</style>
 <script>
   export default {
     name: 'GolfOuting',
