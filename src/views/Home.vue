@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <GolfOuting />
+    <GolfOuting/>
   </div>
 </template>
 
@@ -12,6 +12,9 @@ export default {
   name: 'Home',
   components: {
     GolfOuting
+  },
+  methods:{
+
   }
 }
 </script>

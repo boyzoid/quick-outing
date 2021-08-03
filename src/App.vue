@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
     <v-app-bar app color="primary" dark >
-      <v-toolbar-title>Golf Outing</v-toolbar-title>
+      <v-toolbar-title>Sherpa Shootout</v-toolbar-title>
     </v-app-bar>
 
     <v-main>
@@ -21,12 +21,25 @@
 
 <script>
 import Home from "@/views/Home";
+
 export default {
-  components: {Home},
+  components: {
+    Home,
+
+  },
   props: {
     source: String,
   },
-  data: () => ({
-  }),
+  methods: {
+
+  },
+  data() {
+    return {
+      contentRendered: false,
+      progress: 0,
+      generatingPdf: false,
+      pdfDownloaded: false,
+    };
+  },
 }
 </script>
