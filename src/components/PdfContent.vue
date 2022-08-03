@@ -5,6 +5,9 @@
         <h1 class="text-center">
           Sherpa Shootout {{ shootOutYear }}
         </h1>
+        <h2 class="text-center">
+          Results
+        </h2>
       </v-col>
     </v-row>
     <v-simple-table dense>
@@ -12,8 +15,8 @@
         <thead>
           <tr>
             <th style="width: 50px">Pos.</th>
-            <th>Team</th>
-            <th>Score</th>
+            <th class="text-left">Team</th>
+            <th class="text-left">Score</th>
           </tr>
         </thead>
         <tbody>
@@ -57,5 +60,8 @@ section{
 }
 .text-center{
   text-align: center;
+}
+.text-left{
+  text-align: left;
 }
 </style>

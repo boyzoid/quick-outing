@@ -82,6 +82,13 @@
 .score input::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
+tbody tr:nth-of-type(odd) {
+  background-color: #fff;
+}
+
+tbody tr:nth-of-type(even) {
+  background-color: #ddd;
+}
 </style>
 <script>
 import VueHtml2pdf from "vue-html2pdf";
@@ -107,18 +114,9 @@ import PdfContent from "@/components/PdfContent";
       pdfOpts:{
         paginateByHeight: 1400,
         fileName: 'Sherpa Shootout ' + new Date().getFullYear(),
-        previewModal: false
+        previewModal: true
       },
-      golfers:[
-        {
-        name: 'Kubic, Tom',
-        score: 65
-        },
-        {
-        name: 'Stroz, Scott',
-        score: 70
-        }
-      ],
+      golfers:[],
       teams: [
 
       ],
@@ -219,5 +217,21 @@ import PdfContent from "@/components/PdfContent";
         this.$refs.html2Pdf.generatePdf();
       }
     },
+    mounted(){
+      if( localStorage.golfers ){
+        this.golfers = JSON.parse( localStorage.golfers )
+      }
+      if( localStorage.teams ){
+        this.teams = JSON.parse( localStorage.teams )
+      }
+    },
+    watch: {
+      golfers( list ){
+        localStorage.golfers = JSON.stringify( list );
+      },
+      teams( list ){
+        localStorage.teams = JSON.stringify( list )
+      }
+    }
   }
 </script>
